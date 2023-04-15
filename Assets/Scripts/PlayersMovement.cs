@@ -59,7 +59,9 @@ public class PlayersMovement : MonoBehaviour
         if(collision.gameObject.tag == "Jump")
         {
             canJump = true;
-        }
+			rb.velocity = new Vector3(0, 0, 0);
+            rb.AddForce(transform.position, ForceMode.Impulse);
+		}
     }
 
     void Jump()
