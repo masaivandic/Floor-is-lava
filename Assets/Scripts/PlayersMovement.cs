@@ -31,9 +31,12 @@ public class PlayersMovement : MonoBehaviour
 
     private void Update()
     {
-        Jump();
-        InputHorizontal = Input.GetAxisRaw("Horizontal");
-        InputVertical = Input.GetAxisRaw("Vertical");
+        if (photonView.IsMine)
+        {
+            Jump();
+            InputHorizontal = Input.GetAxisRaw("Horizontal");
+            InputVertical = Input.GetAxisRaw("Vertical");
+        }
     }
 
     private void FixedUpdate()
@@ -42,9 +45,13 @@ public class PlayersMovement : MonoBehaviour
     }
     private void Movement()
     {
-
-        moveDirection = orientation.forward * InputVertical + orientation.right * InputHorizontal;
-        rb.AddForce(moveDirection.normalized * speed, ForceMode.Acceleration);
+        if(photonView.IsMine)
+        {
+            if (InputHorizontal == 0 && InputVertical == 0)
+                return;
+            moveDirection = orientation.forward * InputVertical + orientation.right * InputHorizontal;
+            rb.AddForce(moveDirection.normalized * speed, ForceMode.Acceleration);
+        }
     }
 
     private void OnCollisionEnter(Collision collision)
