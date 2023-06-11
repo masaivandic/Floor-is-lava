@@ -28,7 +28,6 @@ public class HeartsFunction : MonoBehaviour
             StartCoroutine(WaitBeforeUnfreezing());
             transform.GetComponent<MeshRenderer>().material.color = Color.black;
         }
-
     }
 
     IEnumerator WaitBeforeUnfreezing()

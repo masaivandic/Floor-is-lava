@@ -11,6 +11,6 @@ public class LobbyButtons : MonoBehaviourPunCallbacks
 {
     public void JoinGame()
     {
-        SceneManager.LoadScene("SampleScene");
+        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
     }
 }
