@@ -1,6 +1,7 @@
 using Photon.Pun;
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 
 public class PlayersMovement : MonoBehaviour
@@ -24,13 +25,19 @@ public class PlayersMovement : MonoBehaviour
 
     private void Start()
     {
+        TextMeshProUGUI YouSign = transform.GetChild(2).gameObject.GetComponent<TextMeshProUGUI>();
         photonView = GetComponent<PhotonView>();
         rb = GetComponent<Rigidbody>();
         rb.constraints = RigidbodyConstraints.FreezeRotation;
+        //YouSign.text = "You";
     }
 
     private void Update()
     {
+        if(PhotonNetwork.PlayerList.Length < 2)
+        {
+            Destroy(gameObject);
+        }
         if (photonView.IsMine)
         {
             Jump();
@@ -41,7 +48,10 @@ public class PlayersMovement : MonoBehaviour
 
     private void FixedUpdate()
     {
-        Movement();
+        if(photonView.IsMine)
+        {
+            Movement();
+        }
     }
     private void Movement()
     {

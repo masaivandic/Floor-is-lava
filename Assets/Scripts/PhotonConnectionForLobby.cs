@@ -16,9 +16,4 @@ public class PhotonConnectionForLobby : MonoBehaviourPunCallbacks
     {
         PhotonNetwork.JoinLobby();
     }
-
-    public override void OnJoinedLobby()
-    {
-        LOBBY.SetActive(true);
-    }
 }

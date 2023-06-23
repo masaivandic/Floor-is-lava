@@ -14,7 +14,7 @@ public class RockPosition : MonoBehaviour
 
     public void RockPositions()
     {
-        if(Land.transform.position.y < -5.85f)
+        if(Land.transform.position.y < -8.15f)
         {
             int randNum = Random.Range(0, 5);
             transform.position = spawnPoints[randNum].transform.position;

@@ -532,12 +532,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4bd9fc1463d986e43a823ea23ef64c75, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  JoinBTN: {fileID: 985991674}
-  HwToPlay: {fileID: 1930122099}
-  InstructionList:
-  - {fileID: 768612917}
-  - {fileID: 505820439}
-  index: 0
+  Instructions: {fileID: 1930122099}
 --- !u!114 &304901036
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2264,7 +2259,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 304901035}
         m_TargetAssemblyTypeName: LobbyButtons, Assembly-CSharp
-        m_MethodName: NextScreen
+        m_MethodName: Next
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -2467,7 +2462,7 @@ GameObject:
   - component: {fileID: 1370507568}
   - component: {fileID: 1370507567}
   m_Layer: 0
-  m_Name: Button
+  m_Name: Exit
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

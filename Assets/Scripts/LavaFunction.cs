@@ -5,8 +5,6 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEditor;
 using UnityEngine;
-using UnityEngine.UIElements;
-using Random = UnityEngine.Random;
 
 
 public class LavaFunction : MonoBehaviour
@@ -16,51 +14,52 @@ public class LavaFunction : MonoBehaviour
     public float speed;
     public float LandSpeed;
     public GameObject LavaComingIn;
-    Rigidbody rb;
-    public bool LavaTextChanging;
+    Rigidbody Landrb;
+    Rigidbody Lavarb;
     public BoxCollider[] componentslist;
-    public bool timeToSpawn;
+    public bool ChangeText;
+    public bool landUp = true;
+    public bool lavaUp = true;
 
     public void Start()
     {
-        InvokeRepeating("LavaTextUpdate", 0.5f, 19);
+        Lavarb = Lava.GetComponent<Rigidbody>();
+        Landrb = Land.GetComponent<Rigidbody>();
+        Landrb.constraints = RigidbodyConstraints.FreezeRotation | RigidbodyConstraints.FreezePositionZ | RigidbodyConstraints.FreezePositionX;
     }
     public void Update()
     {
-        if(gameObject.activeInHierarchy == true)
-        {
-            LavaRise();
-        }
+        LavaRise();
     }
     public void LavaRise()
     {
-        rb = Lava.GetComponent<Rigidbody>();
-        if (Land.transform.position.y < -2.8f)
+        if (Land.transform.position.y < -6.4f && landUp == true)
         {
-            LavaTextChanging = true;
-            Land.GetComponent<Rigidbody>().velocity = Vector3.up * LandSpeed;
-            foreach (var boxcollider in componentslist)
-            {
-                boxcollider.isTrigger = true;
-            }
+            Landrb.velocity = Vector3.up * LandSpeed;
+            ChangeText = true;
         }
         else
         {
+            landUp = false;
+            if (Lava.transform.position.y < -4.1f && lavaUp == true)
+            {
+                LavaTextUpdate();
+                ChangeText = false;
+                Lavarb.velocity = Vector3.up * speed;
+                Lava.transform.GetComponent<Rigidbody>().constraints = RigidbodyConstraints.FreezeRotation | RigidbodyConstraints.FreezePositionZ | RigidbodyConstraints.FreezePositionX;
+                
+            }
+            else
+            {
+                lavaUp = false;
+                StartCoroutine(LavaDown());
+                Lavarb.constraints = RigidbodyConstraints.FreezeAll;
+            }
+            Landrb.constraints = RigidbodyConstraints.FreezeAll;
             foreach (var boxcollider in componentslist)
             {
                 boxcollider.isTrigger = false;
             }
-            Land.GetComponent<Rigidbody>().constraints = RigidbodyConstraints.FreezeAll;
-        }
-
-        if (Lava.transform.position.y < -4.1f)
-        {
-            rb.velocity = Vector3.up * speed;
-        }
-        else
-        {
-            StartCoroutine(LavaDown());
-            rb.constraints = RigidbodyConstraints.FreezeAll;
         }
     }
 
@@ -72,38 +71,38 @@ public class LavaFunction : MonoBehaviour
 
     IEnumerator LavaText()
     {
-        if(gameObject.activeInHierarchy == true)
+        if(ChangeText == true && Land.transform.position.y >= -6.4f)
         {
-            if (LavaTextChanging == true)
-            {
-                TextMeshProUGUI lavaText = LavaComingIn.transform.Find("LavaComingIn").gameObject.GetComponent<TextMeshProUGUI>();
-                lavaText.text = "Lava coming in... 3";
+            TextMeshProUGUI lavaText = LavaComingIn.transform.Find("LavaComingIn").gameObject.GetComponent<TextMeshProUGUI>();
+            lavaText.text = "Lava coming in... 3";
 
-                yield return new WaitForSeconds(1);
-                lavaText.text = "Lava coming in... 2";
+            yield return new WaitForSeconds(0.5f);
+            lavaText.text = "Lava coming in... 2";
 
-                yield return new WaitForSeconds(1);
-                lavaText.text = "Lava coming in... 1";
+            yield return new WaitForSeconds(0.5f);
+            lavaText.text = "Lava coming in... 1";
 
-                yield return new WaitForSeconds(1);
-                lavaText.text = "LAVA IS COMING!!!";
-                LavaTextChanging = false;
-            }
+            yield return new WaitForSeconds(0.5f);
+            lavaText.text = "LAVA IS COMING!!!";
         }
     }
 
     IEnumerator LavaDown()
     {
         yield return new WaitForSeconds(5);
-        rb.velocity = Vector3.down * 1;
-        rb.constraints = RigidbodyConstraints.FreezePositionX | RigidbodyConstraints.FreezePositionZ | RigidbodyConstraints.FreezeRotationY | RigidbodyConstraints.FreezeRotationY | RigidbodyConstraints.FreezeRotationX | RigidbodyConstraints.FreezeRotationZ;
-        yield return new WaitForSeconds(2);
-        rb.velocity = Vector3.down * speed;
+        Lavarb.constraints = RigidbodyConstraints.FreezePositionX | RigidbodyConstraints.FreezePositionZ | RigidbodyConstraints.FreezeRotationY | RigidbodyConstraints.FreezeRotationY | RigidbodyConstraints.FreezeRotationX | RigidbodyConstraints.FreezeRotationZ;
+        Lavarb.velocity = Vector3.down * speed;
+        yield return new WaitForSeconds(1);
+        lavaUp = true;
+        Lavarb.constraints = RigidbodyConstraints.FreezeAll;
+        yield return new WaitForSeconds(1);
         foreach (var boxcollider in componentslist)
         {
             boxcollider.isTrigger = true;
         }
-        Land.GetComponent<Rigidbody>().constraints = RigidbodyConstraints.FreezePositionX | RigidbodyConstraints.FreezePositionZ | RigidbodyConstraints.FreezeRotationY | RigidbodyConstraints.FreezeRotationY | RigidbodyConstraints.FreezeRotationX | RigidbodyConstraints.FreezeRotationZ;
-        Land.GetComponent<Rigidbody>().velocity = Vector3.down * LandSpeed;
+        Landrb.constraints = RigidbodyConstraints.FreezePositionX | RigidbodyConstraints.FreezePositionZ | RigidbodyConstraints.FreezeRotationY | RigidbodyConstraints.FreezeRotationY | RigidbodyConstraints.FreezeRotationX | RigidbodyConstraints.FreezeRotationZ;
+        Landrb.velocity = Vector3.down * LandSpeed;
+        yield return new WaitUntil(() => Land.transform.position.y <= -9.4f);
+        landUp = true;
     }
 }

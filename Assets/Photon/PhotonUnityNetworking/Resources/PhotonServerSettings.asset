@@ -60,6 +60,20 @@ MonoBehaviour:
   - OnCheckCollision
   - CheckMouseClicks
   - PUNRPCForEnumerator
+  - BlueColour
+  - RedColour
+  - Player1Burnt
+  - Player2Burnt
+  - Player1Colours
+  - Player2Colours
+  - Player1Normal
+  - Player2Normal
+  - PointCounter
+  - Player1Points
+  - Player2Points
+  - player1Points
+  - player2Points
+  - Heart
   DisableAutoOpenWizard: 1
   ShowSettings: 0
   DevRegionSetOnce: 1
